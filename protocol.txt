@@ -1,0 +1,39 @@
+# BINARY PROTOCOL V1 (Big Endian)
+# Unantastbarer Vertrag zwischen BE1, BE2 und FE.
+# Änderungen nur nach Team-Besprechung.
+
+# ============================================================
+# SERVER -> CLIENT
+# ============================================================
+
+## HEADER (8 Bytes)
+# Offset 0-3 : Magic    (Uint32)  = 0xCAFEBABE
+# Offset 4-5 : Type     (Uint16)  = 1 (SimData) | 2 (Stats)
+# Offset 6-7 : PayloadLen (Uint16) = Länge des Payloads in Bytes
+
+## PAYLOAD: SimData (PacketType = 1)
+# Für jeden Partikel (17 Bytes, wiederholt PayloadLen/17 mal):
+# Offset +0  : ID             (Uint32)
+# Offset +4  : X              (Float32)
+# Offset +8  : Y              (Float32)
+# Offset +12 : R              (Uint8)
+# Offset +13 : G              (Uint8)
+# Offset +14 : B              (Uint8)
+# Offset +15 : A              (Uint8)
+# Offset +16 : CollisionFreq  (Uint8)
+
+## PAYLOAD: Stats (PacketType = 2)
+# Offset +0 : TPS     (Float32) = Ticks pro Sekunde (Server-seitig)
+# Offset +4 : CPULoad (Float32) = 0.0 bis 1.0
+
+# ============================================================
+# CLIENT -> SERVER (Commands)
+# ============================================================
+# Offset 0 : CMD_CODE  (Uint8)
+# Offset 1 : VALUE     (Float32)
+#
+# CMD_CODES:
+# 0x01 = SET_GRAVITY   (VALUE = m/s²)
+# 0x02 = SET_FRICTION  (VALUE = 0.0 - 1.0)
+# 0x03 = RESET_SIM
+# 0x04 = SET_PARTICLE_COUNT (VALUE = count, cast to int)
