@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Physics Engine Visualizer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0f; color: #e0e0e0; font-family: monospace; display: flex; height: 100vh; overflow: hidden; }
+
+        #canvas-container { flex: 1; position: relative; }
+        canvas { display: block; width: 100%; height: 100%; }
+
+        #hud { position: absolute; top: 12px; left: 12px; font-size: 12px; color: #7fff7f; pointer-events: none; }
+        #hud span { display: block; line-height: 1.6; }
+
+        #sidebar {
+            width: 260px;
+            background: #12121a;
+            border-left: 1px solid #222;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+        }
+        #sidebar h2 { font-size: 13px; color: #88aaff; letter-spacing: 1px; text-transform: uppercase; }
+
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: 11px; color: #aaa; display: flex; justify-content: space-between; }
+        .control-group input[type="range"] { width: 100%; accent-color: #5566ff; }
+
+        #status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #ff4444;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        #status-dot.connected { background: #44ff88; }
+
+        #telemetry-canvas { width: 100%; height: 80px; background: #0d0d14; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="main-canvas"></canvas>
+        <div id="hud">
+            <span id="hud-fps">FPS: --</span>
+            <span id="hud-tps">TPS: --</span>
+            <span id="hud-particles">Particles: --</span>
+            <span id="hud-latency">Latency: -- ms</span>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <h2><span id="status-dot"></span>Physics Engine</h2>
+
+        <div class="control-group">
+            <label>Gravity <span id="val-gravity">9.81</span></label>
+            <input type="range" id="ctrl-gravity" min="0" max="30" step="0.1" value="9.81" />
+        </div>
+
+        <div class="control-group">
+            <label>Friction <span id="val-friction">0.99</span></label>
+            <input type="range" id="ctrl-friction" min="0.8" max="1.0" step="0.001" value="0.99" />
+        </div>
+
+        <div class="control-group">
+            <label>Particle Count <span id="val-count">5000</span></label>
+            <input type="range" id="ctrl-count" min="100" max="50000" step="100" value="5000" />
+        </div>
+
+        <h2>Telemetry</h2>
+        <canvas id="telemetry-canvas"></canvas>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
